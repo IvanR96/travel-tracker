@@ -29,15 +29,8 @@ const db = new pg.Client({
 db.connect();
 
 app.get("/", async (req, res) => {
-  //Write your code here.
-  const result = await db.query("SELECT country_code FROM visited_countries");
-  let countries = [];
-  result.rows.forEach((country) => {
-    countries.push(country.country_code);
-  });
-  console.log(result.rows);
-  res.render("index.ejs", {countries: countries, total: countries.length});
-  db.end();
+  const countries = await checkVisisted();
+  res.render("index.ejs", { countries: countries, total: countries.length });
 });
 
 app.post("/add", async (req, res)=>{
